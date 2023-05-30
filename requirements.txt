@@ -5,6 +5,7 @@ pandas
 jupyter
 cvxpy
 torch
+pytorch-lightning
+gluonts>=0.10.0
+seaborn
 
-gluonts==0.10.4
-pytorchts

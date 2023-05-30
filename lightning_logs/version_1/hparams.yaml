@@ -1,0 +1,3 @@
+learning_rate: 0.001
+num_samples: 100
+num_series: 20

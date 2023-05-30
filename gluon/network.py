@@ -18,8 +18,7 @@ from typing import Any, Dict
 import torch
 from torch import nn
 
-from Model import TradingBot
-
+from Transformers.Model import TradingBot
 
 class TradeBotTrainingNetwork(nn.Module):
     """
