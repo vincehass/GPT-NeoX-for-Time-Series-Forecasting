@@ -1,0 +1,26 @@
+learning_rate: 0.001
+model_parameters:
+  data_normalization: standardization
+  encoder:
+    attention_dim: 4
+    attention_feedforward_dim: 12
+    attention_heads: 3
+    attention_layers: 3
+  gamma: 0.8
+  input_encoder_layers: 3
+  input_encoding_normalization: true
+  l_norm: 2
+  loss_normalization: series
+  quantile_decoder:
+    attentional_quantile:
+      attention_dim: 12
+      attention_heads: 3
+      attention_layers: 3
+      mlp_dim: 16
+      mlp_layers: 3
+      resolution: 50
+    max_u: 0.99
+    min_u: 0.01
+  series_embedding_dim: 13
+num_samples: 100
+num_series: 24

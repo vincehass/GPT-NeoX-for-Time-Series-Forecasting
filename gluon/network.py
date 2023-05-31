@@ -22,7 +22,7 @@ from Transformers.Model import TradingBot
 
 class TradeBotTrainingNetwork(nn.Module):
     """
-    A shell on top of the TACTiS module, to be used during training only.
+    A shell on top of the TradeBot module, to be used during training only.
     """
 
     def __init__(
@@ -105,7 +105,10 @@ class TradeBotPredictionNetwork(nn.Module):
 
     def forward(
         self,
-        past_target_norm: torch.Tensor,
+        past_target: torch.Tensor,
+        past_observed_values: torch.Tensor,
+        past_time_feat: torch.Tensor,
+        future_time_feat: torch.Tensor,
     ) -> torch.Tensor:
         """
         Parameters:
@@ -119,7 +122,7 @@ class TradeBotPredictionNetwork(nn.Module):
             Samples from the forecasted distribution.
         """
         # The data coming from Gluon is not in the shape we use in the model, so transpose it.
-        hist_value = past_target_norm.transpose(1, 2)
+        hist_value = past_target.transpose(1, 2)
 
         # For the time steps, we take for granted that the data is aligned with a constant frequency
         hist_time = torch.arange(0, hist_value.shape[2], dtype=int, device=hist_value.device)[None, :].expand(

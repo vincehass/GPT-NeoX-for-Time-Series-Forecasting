@@ -54,7 +54,7 @@ class TradeBotLightning(pl.LightningModule):
         samples: torch.Tensor [batch, series, time steps, samples]
             Samples from the forecasted distribution.
         """
-    def forward(self, **kwargs):
+    def forward(self, *args, **kwargs):
         
         
         past_time_feat = kwargs["past_time_feat"]

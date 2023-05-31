@@ -100,7 +100,7 @@ class TradeBotLightEstimator(PyTorchLightningEstimator):
         cdf_normalization: bool = False,
         num_parallel_samples: int = 1,
         batch_size: int = 32,
-        num_batches_per_epoch: int = 1,
+        num_batches_per_epoch: int = 30,
         trainer_kwargs: Optional[Dict[str, Any]] = None,
         train_sampler: Optional[InstanceSampler] = None,
         validation_sampler: Optional[InstanceSampler] = None,
@@ -355,26 +355,26 @@ class TradeBotLightEstimator(PyTorchLightningEstimator):
         )
 
 
+    def _create_instance_splitter(self, mode: str):
+        assert mode in ["training", "validation", "test"]
+
+        instance_sampler = {
+            "training": self.train_sampler,
+            "validation": self.validation_sampler,
+            "test": TestSplitSampler(),
+        }[mode]
+
+        return InstanceSplitter(
+            target_field=FieldName.TARGET,
+            is_pad_field=FieldName.IS_PAD,
+            start_field=FieldName.START,
+            forecast_start_field=FieldName.FORECAST_START,
+            instance_sampler=instance_sampler,
+            past_length=self.history_length,
+            future_length=self.prediction_length,
+            time_series_fields=[FieldName.FEAT_TIME, FieldName.OBSERVED_VALUES],
+            #dummy_value=self.distr_output.value_in_support,
+        )
 
 
-
-    def _create_instance_splitter(self, module: TradeBotLightning, mode: str):
-            assert mode in ["training", "validation", "test"]
-
-            instance_sampler = {
-                "training": self.train_sampler,
-                "validation": self.validation_sampler,
-                "test": TestSplitSampler(),
-            }[mode]
-
-            return InstanceSplitter(
-                target_field=FieldName.TARGET,
-                is_pad_field=FieldName.IS_PAD,
-                start_field=FieldName.START,
-                forecast_start_field=FieldName.FORECAST_START,
-                instance_sampler=instance_sampler,
-                past_length=self.history_length,
-                future_length=self.prediction_length,
-                time_series_fields=[FieldName.FEAT_TIME, FieldName.OBSERVED_VALUES],
-                dummy_value= DistributionOutput.value_in_support,
-            )
+ 
