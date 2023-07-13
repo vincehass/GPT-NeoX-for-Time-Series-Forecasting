@@ -1,0 +1,48 @@
+checkpoints:
+  #loadCheckpoint': filename
+  inferenceCheckpoint: /gpfs/alpine/csc499/scratch/vgurev/summit/transformer/logs/0-2.ckpt
+  modelCheckpoint:
+    auto_insert_metric_name: false
+    dirpath: logs/
+    every_n_train_steps: 2
+    monitor: train_loss
+    save_top_k: 2
+    verbose: true
+epoch:
+  batch_size: 6
+  num_batches_per_epoch: 2
+estimator:
+  context_length: 240
+  lags_seq:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 24
+  - 30
+  prediction_length: 24
+  scaling: true
+featureOpt:
+  staticFeatureEmbDim: 3
+logger:
+  name: transformer_logs
+  save_dir: logs
+plTrainer:
+  accelerator: gpu
+  devices: 6
+  gradient_clip_val: 5
+  log_every_n_steps: 1
+  max_epochs: 1
+  num_nodes: 1
+  strategy: ddp
+transformer:
+  activation: gelu
+  decoder_checkpoint_step: 1
+  dim_feedforward: 512
+  encoder_checkpoint_step: 1
+  nhead: 12
+  num_decoder_layers: 12
+  num_encoder_layers: 24
